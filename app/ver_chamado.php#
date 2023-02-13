@@ -1,0 +1,207 @@
+<?php
+  require_once 'valida_acesso.php';
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../bootstrap_4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../font-awesome_5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/custom.css">
+
+    <title><?php echo $user_name = $_SESSION['usuarioNome'];?></title>
+  </head>
+
+  <body>
+
+    <!-- início do preloader -->
+    <div id="preloader">
+      <div class="inner">
+        <img style="width: 10rem;" src="../img/preloader.svg">
+        <h3 class="text-center fst-italic text-muted"><strong>Carregando ...</strong></h3>
+        </div>
+      </div>
+    </div>
+    <!-- fim do preloader -->
+
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand font-weight-bold" href="#"><img src="../img/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""> CVA Help Desk</a>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="logoff.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">    
+      <div class="row">
+
+        <div class="card-home">
+          <div class="card">
+            <?php
+              //Recebendo id pela url
+              $id = $_GET['id'];
+              //Recebendo variável de navegação
+              $voltar = $_GET['voltar'];
+            ?>
+            
+            <div class="card-header text-center font-weight-bold">
+              <h4 style="color:#808080;"><?php echo "Chamado Número: $id"; ?></h4>
+            </div>
+            
+              <div class="card-body">
+                
+                <?php
+                      
+                  $result = "SELECT * FROM `chamados` WHERE chamado_id = $id";
+                  $resultado = mysqli_query($conn, $result);
+                  $row = mysqli_fetch_assoc($resultado);
+
+                  $status = $row['status'];
+                  if ($status == NULL) {
+                    $status = "<b style='color:#28a745'>ABERTO</b>";
+                  }else {
+                    $status = $row['status'];
+                  }
+
+                  $img_upload = $row['img_upload'];
+                  if ($img_upload == NULL) {
+                    $img_upload = "NÃO ENVIADO";
+                  }else {
+                    $img_upload = "<a target='_blank' href='../upload_img/$img_upload'>" . $row['img_upload'] . "</a>";
+                  }
+
+                  $data_cad = date('d/m/Y H:i:s', strtotime($row['data_cad']));
+                  if ($data_cad == NULL) {
+                    $data_cad = "";
+                  }else {
+                    $data_cad = date('d/m/Y H:i:s', strtotime($row['data_cad']));
+                  }
+
+                  $data_mod = $row['data_mod'];
+                  if ($data_mod == NULL) {
+                    $data_mod = "SEM ATUALIZAÇÕES";
+                  }else {
+                    $data_mod = date('d/m/Y H:i:s', strtotime($row['data_mod']));
+                  }
+                ?>
+
+                <!-- Botão para acionar modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ExemploModalCentralizado">
+                  Abrir modal de demonstração
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="false">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="TituloModalCentralizado">Título do modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary">Salvar mudanças</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                
+                  <div class="form-group">
+                    <label><strong>Categoria:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $row['categoria'];?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $row['categoria'];?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Setor:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $row['setor'];?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $row['setor'];?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Endereço/Local:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $row['endereco'];?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $row['endereco'];?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Telefone:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $row['telefone'];?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $row['telefone'];?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Descrição:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $row['descricao'];?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $row['descricao'];?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Status:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $status;?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6><?php echo $status;?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Imagens/Fotos:</strong></label>
+                    <h6 style="color:#808080;"><?php echo $img_upload;?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Data/Hora de Abertura:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $data_cad;?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $data_cad;?></h6>
+                  </div>
+
+                  <div class="form-group">
+                    <label><strong>Data/Hora de Atualização:</strong></label>
+                    <!--<input type="text" class="form-control font-italic" value="<?php echo $data_mod;?>" onkeyup="maiuscula(this)" readonly>-->
+                    <h6 style="color:#808080;"><?php echo $data_mod;?></h6>
+                  </div>
+
+                  
+                  <div class="row mt-5">
+                    <div class="col-4 mx-auto">
+                      <a class="btn btn-lg btn-warning btn-block" href="<?php echo $voltar; //enviando variável de navegação?>">Voltar</a>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../js/tippy/popper.min.js"></script>
+    <script src="../js/tippy/tippy-bundle.umd.js"></script>
+    <script src="../bootstrap_4.1/js/bootstrap.min.js"></script>
+
+    <script src="../js/jquery_validation/jquery.validate.min.js"></script>
+    <script src="../js/jquery_validation/additional-methods.min.js"></script>
+    <script src="../js/jquery_validation/localization/messages_pt_BR.js"></script>
+
+    <!--Preloader-->
+    <script>
+      $(window).on('load', function () {
+        $('#preloader .inner').fadeOut();
+        $('#preloader').delay(400).fadeOut('slow'); 
+        $('body').delay(400).css({'overflow': 'visible'});
+      })
+    </script>
+  </body>
+</html>
