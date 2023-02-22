@@ -1,8 +1,8 @@
 <?php
-require_once 'includes/conexao.php';
 if (!isset($_SESSION)) {
   session_start();
-} 
+}
+require_once 'includes/conexao.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
