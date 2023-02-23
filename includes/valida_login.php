@@ -37,7 +37,7 @@
 
         //caso os dados do usuário estejam corretos direciona-o ao nível de acesso correspondente 
         if ($_SESSION['usuarioNiveisAcessoId'] == "1") {
-          header("Location: ../app/admin.php");
+          header("Location: ../app/super_user.php");
           //Gera arquivo de log de acesso
           $perfil_superuser = "SUPER USUÁRIO";
           $local_file = "../logs/log_acesso_superuser.log";

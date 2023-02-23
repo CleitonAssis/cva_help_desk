@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 10-Jan-2022 às 23:06
+-- Generation Time: 22-Fev-2023 às 20:38
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.3.5
 
@@ -25,71 +25,63 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `categorias`
+--
+
+DROP TABLE IF EXISTS `categorias`;
+CREATE TABLE IF NOT EXISTS `categorias` (
+  `categoria_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome_categoria` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`categoria_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `categorias`
+--
+
+INSERT INTO `categorias` (`categoria_id`, `nome_categoria`) VALUES
+(1, 'COMPUTADOR/NOTEBOOK'),
+(2, 'REDE/INTERNET'),
+(3, 'IMPRESSORA');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `chamados`
 --
 
 DROP TABLE IF EXISTS `chamados`;
 CREATE TABLE IF NOT EXISTS `chamados` (
   `chamado_id` int(5) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
-  `chamado_perfil_id` int(10) UNSIGNED NOT NULL,
-  `categoria` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `setor` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `endereco` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nome` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telefone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ativo` enum('S','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S',
-  `status` text COLLATE utf8mb4_unicode_ci,
-  `img_upload` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `data_cad` datetime NOT NULL,
-  `data_mod` datetime DEFAULT NULL,
+  `usuarios_usuario_id` int(10) UNSIGNED NOT NULL,
+  `perfis_perfil_id` int(10) UNSIGNED NOT NULL,
+  `setores_setor_id` int(10) UNSIGNED NOT NULL,
+  `categorias_categoria_id` int(10) UNSIGNED NOT NULL,
+  `endereco_chamado` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefone_chamado` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descricao_chamado` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chamado_ativo` enum('S','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S',
+  `status_chamado` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `situacao_chamado` text COLLATE utf8mb4_unicode_ci,
+  `cod_img_chamado` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data_cad_chamado` datetime NOT NULL,
+  `data_mod_chamado` datetime DEFAULT NULL,
   PRIMARY KEY (`chamado_id`),
-  KEY `chamado_perfil_id` (`chamado_perfil_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `fk_chamados_categorias` (`categorias_categoria_id`),
+  KEY `fk_chamados_usuarios` (`usuarios_usuario_id`),
+  KEY `fk_chamados_perfis` (`perfis_perfil_id`),
+  KEY `fk_chamados_setores` (`setores_setor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `chamados`
 --
 
-INSERT INTO `chamados` (`chamado_id`, `chamado_perfil_id`, `categoria`, `setor`, `endereco`, `nome`, `email`, `telefone`, `descricao`, `ativo`, `status`, `img_upload`, `data_cad`, `data_mod`) VALUES
-(00103, 3, 'CRIAÃ‡ÃƒO DE USUÃRIO', 'SAÃšDE', 'PSF 08', 'Maria Rita', 'user@teste.com.br', '(55) 55555-5555', 'CRIE UM USUÃRIO PRA MIM', 'S', NULL, NULL, '2022-01-06 08:50:56', NULL),
-(00104, 3, 'CRIAÃ‡ÃƒO DE USUÃRIO', 'SAÃšDE', 'PSF 08', 'Maria Rita', 'user@teste.com.br', '(88) 88888-8888', 'EU QUERO UM USER TBM', 'S', NULL, NULL, '2022-01-06 09:38:34', NULL),
-(00105, 3, 'CRIAÃ‡ÃƒO DE USUÃRIO', 'SAÃšDE', 'PSF 08', 'Maria Rita', 'user@teste.com.br', '(33) 33333-3333', 'OPA TBM QUERO USER', 'S', NULL, NULL, '2022-01-06 09:41:51', NULL),
-(00106, 3, 'COMPUTADOR/NOTEBOOK', 'SAÃšDE', 'PSF 08', 'Maria Rita', 'user@teste.com.br', '(11) 11111-1111', 'MEU PC NÃƒO LIGA', 'S', NULL, 'Maria Rita_ac3d9b46b2560a6f9eb4f44126c6c825.jpg', '2022-01-06 09:47:57', NULL),
-(00107, 2, 'OUTRO', 'EDUCAÃ‡ÃƒO', 'ESCOLA HILDA MORAIS', 'Italo de Oliveira', 'tecnico@teste.com.br', '(44) 44444-4444', 'PC MUITO LENTO', 'S', NULL, 'Italo de Oliveira_bb6b0bbe4ca466ac3566e1bb029b338e.jpg', '2022-01-06 10:12:04', NULL),
-(00108, 2, 'OUTRO', 'EDUCAÃ‡ÃƒO', 'ESCOLA HILDA MORAIS', 'Italo de Oliveira', 'tecnico@teste.com.br', '(66) 66666-6666', 'ESTAMOS SEM INTERNET', 'S', NULL, NULL, '2022-01-06 10:14:04', NULL),
-(00109, 1, 'OUTRO', 'OUTRO', 'SEM ENDEREÃ‡O', 'Administrador', 'adm@teste.com.br', '(00) 00000-0000', 'ISSO Ã‰ APENAS UM TESTE', 'S', NULL, 'Administrador_6a995c0f70b9d6b0a89ccad10533ebb3.jpg', '2022-01-06 10:22:00', NULL),
-(00110, 3, 'IMPRESSORA', 'SAÃšDE', 'PSF 08', 'Maria Rita', 'user@teste.com.br', '(44) 44444-4444', 'MINHA IMPRESSORA TÃ FAZENDO MUITO BARULHO AO IMPRIMIR', 'S', NULL, 'Maria Rita_8262bd2515b5d0f009190f83e49f314f.jpg', '2022-01-06 10:31:19', NULL),
-(00111, 3, 'INSTALAÃ‡ÃƒO DE CÃ‚MERA', 'PONTO DE APOIO ESPERANÃ‡A', 'ESPERANÃ‡A', 'Maria Rita', 'user@teste.com.br', '(44) 44444-4444', 'ESTAMOS PRECISANDO URGENTEMENTE DE CÃ‚MERAS AQUI NO PONTO DE APOIO', 'S', NULL, NULL, '2022-01-07 09:13:06', NULL);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `login`
---
-
-DROP TABLE IF EXISTS `login`;
-CREATE TABLE IF NOT EXISTS `login` (
-  `login_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `login_nome` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_email` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_senha` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_perfil_id` int(10) UNSIGNED NOT NULL,
-  `login_data_cad` datetime NOT NULL,
-  `login_data_mod` datetime DEFAULT NULL,
-  PRIMARY KEY (`login_id`),
-  KEY `fk_login_perfis` (`login_perfil_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `login`
---
-
-INSERT INTO `login` (`login_id`, `login_nome`, `login_email`, `login_senha`, `login_perfil_id`, `login_data_cad`, `login_data_mod`) VALUES
-(1, 'Administrador', 'adm@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', 1, '2021-12-02 00:00:00', NULL),
-(2, 'Maria Rita', 'user@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', 3, '2021-12-16 00:00:00', NULL),
-(3, 'Italo de Oliveira', 'tecnico@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', 2, '2021-12-19 00:00:00', NULL);
+INSERT INTO `chamados` (`chamado_id`, `usuarios_usuario_id`, `perfis_perfil_id`, `setores_setor_id`, `categorias_categoria_id`, `endereco_chamado`, `telefone_chamado`, `descricao_chamado`, `chamado_ativo`, `status_chamado`, `situacao_chamado`, `cod_img_chamado`, `data_cad_chamado`, `data_mod_chamado`) VALUES
+(00001, 1, 3, 1, 1, 'PSF 05', NULL, 'PC NÃO LIGA DE FORMA ALGUMA', 'S', NULL, NULL, NULL, '2022-11-22 16:04:11', NULL),
+(00002, 2, 2, 2, 3, 'ESCOLA HILDA MORAES', NULL, 'IMPRESSORA NÃO ESTÁ IMPRIMINDO', 'S', NULL, NULL, NULL, '2022-11-22 16:13:29', NULL),
+(00003, 3, 3, 1, 2, 'SECRETARIA DE SAÚDE', NULL, 'ESTAMOS SEM INTERNET DESDE 16/04/2022', 'S', NULL, NULL, NULL, '2022-11-22 16:56:57', NULL),
+(00004, 1, 3, 1, 3, 'PSF 05', NULL, 'NOSSA IMPRESSORA ESTÁ COM UM BARULHO ESTRANHO AO IMPRIMIR', 'S', NULL, NULL, NULL, '2022-11-22 17:50:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -100,10 +92,10 @@ INSERT INTO `login` (`login_id`, `login_nome`, `login_email`, `login_senha`, `lo
 DROP TABLE IF EXISTS `perfis`;
 CREATE TABLE IF NOT EXISTS `perfis` (
   `perfil_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `perfil` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ativo` enum('S','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S',
-  `perfil_data_cad` datetime NOT NULL,
-  `perfil_data_mod` datetime DEFAULT NULL,
+  `nome_perfil` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `perfil_ativo` enum('S','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S',
+  `data_cad_perfil` datetime NOT NULL,
+  `data_mod_perfil` datetime DEFAULT NULL,
   PRIMARY KEY (`perfil_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -111,10 +103,78 @@ CREATE TABLE IF NOT EXISTS `perfis` (
 -- Extraindo dados da tabela `perfis`
 --
 
-INSERT INTO `perfis` (`perfil_id`, `perfil`, `ativo`, `perfil_data_cad`, `perfil_data_mod`) VALUES
-(1, 'Administrador', 'S', '2021-12-16 14:23:22', NULL),
-(2, 'Técnico', 'S', '2021-12-16 14:25:39', NULL),
-(3, 'Usuário', 'S', '2021-12-16 14:26:22', NULL);
+INSERT INTO `perfis` (`perfil_id`, `nome_perfil`, `perfil_ativo`, `data_cad_perfil`, `data_mod_perfil`) VALUES
+(1, 'SUPER USUÁRIO', 'S', '2022-11-22 15:58:14', NULL),
+(2, 'TÉCNICO', 'S', '2022-11-22 15:58:14', NULL),
+(3, 'USUÁRIO', 'S', '2022-11-22 15:58:14', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `setores`
+--
+
+DROP TABLE IF EXISTS `setores`;
+CREATE TABLE IF NOT EXISTS `setores` (
+  `setor_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome_setor` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`setor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `setores`
+--
+
+INSERT INTO `setores` (`setor_id`, `nome_setor`) VALUES
+(1, 'SAÚDE'),
+(2, 'EDUCAÇÃO'),
+(3, 'ASSISTÊNCIA SOCIAL'),
+(4, 'OBRAS'),
+(5, 'MEIO AMBIENTE'),
+(6, 'CULTURA,ESPORTE E LAZER'),
+(7, 'AGRICULTURA'),
+(8, 'ENGENHARIA'),
+(9, 'POLICIA MILITAR'),
+(10, 'POLICIA CIVIL'),
+(11, 'SUB PREFEITURA CACH.ESCURA'),
+(12, 'SUB PREFEITURA BRAÚNAS'),
+(13, 'SUB PREFEITURA B.J.DO BAGRE'),
+(14, 'ABRIGO MUNICIPAL'),
+(15, 'CONSELHO TUTELAR'),
+(16, 'CRAS'),
+(17, 'CREAS');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `usuario_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `perfis_perfil_id` int(10) UNSIGNED NOT NULL,
+  `setores_setor_id` int(10) UNSIGNED NOT NULL,
+  `nome_usuario` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_usuario` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `senha_usuario` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefone_usuario` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_usuario` enum('ATIVO','INATIVO') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ATIVO',
+  `data_cad_usuario` datetime NOT NULL,
+  `data_mod_usuario` datetime DEFAULT NULL,
+  PRIMARY KEY (`usuario_id`),
+  KEY `fk_usuarios_perfis` (`perfis_perfil_id`),
+  KEY `fk_usuarios_setores` (`setores_setor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`usuario_id`, `perfis_perfil_id`, `setores_setor_id`, `nome_usuario`, `email_usuario`, `senha_usuario`, `telefone_usuario`, `status_usuario`, `data_cad_usuario`, `data_mod_usuario`) VALUES
+(1, 3, 1, 'MARIA RITA', 'mariarita@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'INATIVO', '2022-11-22 16:02:25', NULL),
+(2, 2, 2, 'MATEUS ROCHA', 'mateusrocha@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'ATIVO', '2022-11-22 16:02:25', NULL),
+(3, 3, 1, 'NILMA ANDRADE', 'nilma@teste.com.br', '827ccb0eea8a706c4c34a16891f84e7b', NULL, 'ATIVO', '2022-11-22 16:53:50', NULL);
 
 --
 -- Constraints for dumped tables
@@ -124,13 +184,17 @@ INSERT INTO `perfis` (`perfil_id`, `perfil`, `ativo`, `perfil_data_cad`, `perfil
 -- Limitadores para a tabela `chamados`
 --
 ALTER TABLE `chamados`
-  ADD CONSTRAINT `chamados_ibfk_1` FOREIGN KEY (`chamado_perfil_id`) REFERENCES `perfis` (`perfil_id`);
+  ADD CONSTRAINT `fk_chamados_categorias` FOREIGN KEY (`categorias_categoria_id`) REFERENCES `categorias` (`categoria_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_chamados_perfis` FOREIGN KEY (`perfis_perfil_id`) REFERENCES `perfis` (`perfil_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_chamados_setores` FOREIGN KEY (`setores_setor_id`) REFERENCES `setores` (`setor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_chamados_usuarios` FOREIGN KEY (`usuarios_usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `login`
+-- Limitadores para a tabela `usuarios`
 --
-ALTER TABLE `login`
-  ADD CONSTRAINT `fk_login_perfis` FOREIGN KEY (`login_perfil_id`) REFERENCES `perfis` (`perfil_id`);
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `fk_usuarios_perfis` FOREIGN KEY (`perfis_perfil_id`) REFERENCES `perfis` (`perfil_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_usuarios_setores` FOREIGN KEY (`setores_setor_id`) REFERENCES `setores` (`setor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

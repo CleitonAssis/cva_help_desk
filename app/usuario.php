@@ -32,7 +32,6 @@
       <div class="inner">
         <img style="width: 10rem;" src="../img/preloader.svg">
         <h3 class="text-center fst-italic text-muted"><strong>Carregando ...</strong></h3>
-        </div>
       </div>
     </div>
     <!-- fim do preloader -->
